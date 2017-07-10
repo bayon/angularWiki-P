@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <script type="text/javascript" src="angular.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
+    </script>
+    <title>Angular Wiki-P</title>
+    <style>
+        .content{
+          width:80%;
+          margin:10%;
+        }
+        table{border-collapse:collapse;}
+        td{padding:5px;}
+    </style>
+  
+  </head>
+  <body > 
+      <div class="content"> 
+      <h1>Angular Wiki-P</h1> 
+      <p>An API to search wikipedia created with angularjs.</p>
+        <input class="form-control" id="searchTerm" placeholder="what?">
+        <button id="search" type="button" class="btn btn-primary">search</button>
+
+        <div id="wrapper" ng-app="myApp">
+              <div ng-controller="DataCtrl">
+                  <table border=1 >
+                      <tbody ng-repeat="student in data">
+                           <tr ng-repeat="detail in student track by $index">
+                              <td > {{detail}}</td>
+                              <!-- 
+                              <span ng-if="detail.date"> {{detail}}</span>
+                              <span ng-if="!detail.date">  {{detail}}<span>
+                                -->
+                                
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+        </div> 
+      </div> 
+<script>
+//var app = angular.module('myApp', []);
+var app =  angular.module('myApp', []);
+
+function DataCtrl($scope, $http) {
+
+ $("#search").click(function(){
+
+      console.log('search was clicked');
+      var searchTerm = $("#searchTerm").val();
+      $http.jsonp("https://en.wikipedia.org/w/api.php?action=opensearch&search="+searchTerm+"&format=json&callback=JSON_CALLBACK;")
+      .success(function(data) {
+        $scope.data = data;
+        console.log(data);
+        
+      }).
+      error(function (data) {
+        $scope.data = "Request failed";
+      });
+
+ });
+
+}
+</script>
+
+</body>
+</html>
